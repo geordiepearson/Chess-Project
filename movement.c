@@ -351,3 +351,24 @@ void moveBishop(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove
 		checkBishopMove(gameBoard, arrayIndexPiece, arrayIndexMove, 1);
 	}
 }
+
+void moveQueen(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
+	
+	if(*arrayIndexMove < *arrayIndexPiece){
+		// Checks if a valid vertical move has been attempted.
+		checkVerticalRook(gameBoard, arrayIndexPiece, arrayIndexMove, -8);
+		// Checks if a valid horizontal move has been attempted.
+		checkHorizontalRook(gameBoard, arrayIndexPiece, arrayIndexMove, -1);
+		// Checks if a valid diagonal move has been attempted.
+		checkBishopMove(gameBoard, arrayIndexPiece, arrayIndexMove, -1);
+	}
+
+	else{
+		// Checks if a valid vertical move has been attempted.
+		checkVerticalRook(gameBoard, arrayIndexPiece, arrayIndexMove, 8);
+		// Checks if a valid horizontal move has been attempted.
+		checkHorizontalRook(gameBoard, arrayIndexPiece, arrayIndexMove, 1);
+		// Checks if a valid diagonal move has been attempted.
+		checkBishopMove(gameBoard, arrayIndexPiece, arrayIndexMove, 1);	
+	}
+}

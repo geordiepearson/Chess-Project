@@ -182,6 +182,11 @@ void movePiece(int* turn, int* arrayIndexPiece, int* arrayIndexMove,
  	else if(gameBoard[*arrayIndexPiece][1] == 'B'){
  		moveBishop(gameBoard, arrayIndexPiece, arrayIndexMove);
  	}
+
+ 	else if(gameBoard[*arrayIndexPiece][1] == 'Q'){
+ 		moveQueen(gameBoard, arrayIndexPiece, arrayIndexMove);
+ 	}
+
  }
 
 int main(int argc, char** argv){

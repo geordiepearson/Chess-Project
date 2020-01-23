@@ -56,4 +56,8 @@ void moveKnight(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove
 // a bishop. Updates the board if a valid move is provided.
 void moveBishop(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove);
 
+// Checks for all the potential valid moves a player could have attempted with
+// a queen. Updates the board if a valid move is provided.
+void moveQueen(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove);
+
 #endif /*MOVEMENT_H_*/
