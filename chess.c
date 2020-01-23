@@ -170,7 +170,15 @@ void movePiece(int* turn, int* arrayIndexPiece, int* arrayIndexMove,
  	if(gameBoard[*arrayIndexPiece][1] == 'P'){
  		movePawn(gameBoard, arrayIndexPiece, arrayIndexMove);
  	}
-}
+
+ 	else if(gameBoard[*arrayIndexPiece][1] == 'R'){
+ 		moveRook(gameBoard, arrayIndexPiece, arrayIndexMove);
+ 	}
+
+ 	else if(gameBoard[*arrayIndexPiece][1] == 'N'){
+ 		moveKnight(gameBoard, arrayIndexPiece, arrayIndexMove);
+ 	}
+ }
 
 int main(int argc, char** argv){
 	int turn = 2;
@@ -179,17 +187,17 @@ int main(int argc, char** argv){
 
 	char piece_location[4];
 	char piece_movement[4];
-
 	printBoard(&turn);
+
+	while(1){
 	selectPiece(&turn, &arrayIndexPiece, piece_location);
 	printBoard(&turn);
 	movePiece(&turn, &arrayIndexPiece, &arrayIndexMove, piece_movement);
 	printBoard(&turn);
-
-	selectPiece(&turn, &arrayIndexPiece, piece_location);
-	printBoard(&turn);
-	movePiece(&turn, &arrayIndexPiece, &arrayIndexMove, piece_movement);
-	printBoard(&turn);
+	}
 }
 
-/*Comment main and move piece*/
+/*
+Simplify movement
+Comment main and move piece, move piece functionality
+*/

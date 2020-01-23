@@ -32,7 +32,7 @@ void isTeamPiece(int* arrayIndex, int* piece_team_flag, int* turn);
 //pieces. Then prints the piece and its location on the board.
 void selectPiece(int* turn, int* arrayIndex, char piece_location[]);
 
-
+// 
 void movePiece(int* turn, int*arrayIndexPiece, int* arrayIndexMove, 
 	char piece_location[]);
 
