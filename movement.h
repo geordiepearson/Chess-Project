@@ -35,9 +35,14 @@ void checkVerticalRook(char gameBoard[64][3], int* arrayIndexPiece,
 	int* arrayIndexMove, int oneTile);
 
 // Checks if the player has attempted to move the rook left or right any
-// number of spaces. If the move is valid, updates the gameBard array.
+// number of spaces. If the move is valid, updates the gameBoard array.
 void checkHorizontalRook(char gameBoard[64][3], int* arrayIndexPiece, 
 	int* arrayIndexMove, int oneTile);
+
+// Checks if the player has attempted to move the bishop diagonally left or 
+// right any number of spaces. If the move is valid, updates the gameBoard array.
+void checkBishopMove(char gameBoard[64][3], int* arrayIndexPiece, 
+	int* arrayIndexMove, int verticalDirection);
 
 // Checks for all the potential valid moves a player could have attempted with
 // a rook. Updates the board if a valid move is provided.
@@ -46,5 +51,9 @@ void moveRook(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove);
 // Checks for all the potential valid moves a player could have attempted with
 // a knight. Updates the board if a valid move is provided.
 void moveKnight(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove);
+
+// Checks for all the potential valid moves a player could have attempted with
+// a bishop. Updates the board if a valid move is provided.
+void moveBishop(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove);
 
 #endif /*MOVEMENT_H_*/

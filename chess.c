@@ -178,10 +178,14 @@ void movePiece(int* turn, int* arrayIndexPiece, int* arrayIndexMove,
  	else if(gameBoard[*arrayIndexPiece][1] == 'N'){
  		moveKnight(gameBoard, arrayIndexPiece, arrayIndexMove);
  	}
+
+ 	else if(gameBoard[*arrayIndexPiece][1] == 'B'){
+ 		moveBishop(gameBoard, arrayIndexPiece, arrayIndexMove);
+ 	}
  }
 
 int main(int argc, char** argv){
-	int turn = 2;
+	int turn = 1;
 	int arrayIndexPiece = 0;
 	int arrayIndexMove = 0;
 

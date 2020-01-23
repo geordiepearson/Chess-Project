@@ -255,8 +255,9 @@ void moveRook(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
 }
 
 void moveKnight(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
-	// Intialises and computes the number of tiles between the current and new 
-	// position. Also intalises a character to represent the opposition team.
+	// Intialises and computes the number of tiles in the array between the 
+	// current and new position. Also intalises a character to represent
+	//  the opposition team.
 	int tileDifference = abs(*arrayIndexMove - *arrayIndexPiece);
 	char opposingTeam;
 
@@ -269,8 +270,8 @@ void moveKnight(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove
 
 	// If the new position is located in one of the 8 potentially valid places 
 	// for the knights movement.
-	if(tileDifference == 17 || tileDifference == 15 || tileDifference == 10 ||
-	 tileDifference == 6){
+	if((tileDifference == 17) || (tileDifference == 15) || (tileDifference == 10) ||
+	 (tileDifference == 6)){
 		
 		// If the new position is empty or contains an opposition piece. 
 		if(((strcmp(gameBoard[*arrayIndexMove],"O ") == 0) || 
@@ -281,5 +282,72 @@ void moveKnight(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove
 			strcpy(gameBoard[*arrayIndexMove], gameBoard[*arrayIndexPiece]);
 			strcpy(gameBoard[*arrayIndexPiece], "O ");
 		}
+	}
+}
+
+void checkBishopMove(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove, int verticalDirection){
+	// Intialises: 
+	//  - The number of tiles in the array between the new and current position
+	//  - A character to represent the opposition team
+	//  - The number of spaces the bishop travels on the board
+	//  - The horizontal direction the bishop travels in
+	//  - An integer to count the number of succesful iterations of the foor loop
+	int tileDifference = abs(*arrayIndexMove - *arrayIndexPiece);
+	char opposingTeam;
+	int numberOfSpaces;
+	int Horizontaldirection;
+	int count = 0;
+
+	// If its white's turn, sets the opposing team to black and vice versa.
+	if(gameBoard[*arrayIndexPiece][0] == 'W'){
+		opposingTeam = 'B';
+	}else{
+		opposingTeam = 'W';
+	}
+
+	// If the new position is located along the diagonal paths.
+	if(((tileDifference % 7) == 0) || ((tileDifference % 9) == 0)){
+		// Determines how many spaces diagonally the bishop will travel and in 
+		// which direction.
+		if((tileDifference % 7) ==0){
+			numberOfSpaces = tileDifference / 7;
+			Horizontaldirection = 7;
+		}
+
+		else{
+			numberOfSpaces = tileDifference / 9;
+			Horizontaldirection = 9;
+		}
+
+		// Checks that every space between the two positions (not including them) 
+		// is empty.
+		for(int i = 1; i < numberOfSpaces; ++i){
+			if(strcmp(gameBoard[*arrayIndexPiece + (i * Horizontaldirection * verticalDirection)], "O ") == 0){
+				count += 1;
+			}
+		}
+
+		// If every space between the two positions is empty and the new position
+		// is empty or contains an opposition piece.
+		if((count + 1 == numberOfSpaces) && ((strcmp(gameBoard[*arrayIndexMove],"O ") == 0) || 
+			(gameBoard[*arrayIndexMove][0] == opposingTeam))){
+			
+			// Move the bishop to the new position and leave the old position 
+			// empty.
+			strcpy(gameBoard[*arrayIndexMove], gameBoard[*arrayIndexPiece]);
+			strcpy(gameBoard[*arrayIndexPiece], "O ");
+		}
+	}
+}
+
+void moveBishop(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
+	// If the bishop is moving diagonally north on the board.
+	if(*arrayIndexMove < *arrayIndexPiece){
+		checkBishopMove(gameBoard, arrayIndexPiece, arrayIndexMove, -1);
+	}
+
+	// If the bishop is moving diagonally south on the board.
+	else{
+		checkBishopMove(gameBoard, arrayIndexPiece, arrayIndexMove, 1);
 	}
 }
