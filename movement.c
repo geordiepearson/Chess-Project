@@ -269,7 +269,7 @@ void moveKnight(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove
 	}
 
 	// If the new position is located in one of the 8 potentially valid places 
-	// for the knights movement.
+	// for the knight's movement.
 	if((tileDifference == 17) || (tileDifference == 15) || (tileDifference == 10) ||
 	 (tileDifference == 6)){
 		
@@ -353,7 +353,6 @@ void moveBishop(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove
 }
 
 void moveQueen(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
-	
 	if(*arrayIndexMove < *arrayIndexPiece){
 		// Checks if a valid vertical move has been attempted.
 		checkVerticalRook(gameBoard, arrayIndexPiece, arrayIndexMove, -8);
@@ -370,5 +369,20 @@ void moveQueen(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove)
 		checkHorizontalRook(gameBoard, arrayIndexPiece, arrayIndexMove, 1);
 		// Checks if a valid diagonal move has been attempted.
 		checkBishopMove(gameBoard, arrayIndexPiece, arrayIndexMove, 1);	
+	}
+}
+
+void moveKing(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
+	// Intialises an integer to represent the number of tiles in the array the 
+	// king travels.
+	int tileDifference = abs(*arrayIndexMove - *arrayIndexPiece);
+
+	// If the new position is located in one of the 8 potentially valid places 
+	// for the king's movement.
+	if((tileDifference == 1) || (tileDifference == 7) || (tileDifference == 8) 
+		|| (tileDifference == 9)){
+		
+		// Check if the movement was valid in any direction but only 1 tile away.
+		moveQueen(gameBoard, arrayIndexPiece, arrayIndexMove);
 	}
 }

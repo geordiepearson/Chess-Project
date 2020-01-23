@@ -163,10 +163,15 @@ void selectPiece(int* turn, int* arrayIndexPiece, char piece_location[]){
 
 void movePiece(int* turn, int* arrayIndexPiece, int* arrayIndexMove, 
 	char piece_movement[]){
+
+	// Intialises the flags to check for valid piece selection. 
 	int piece_input_flag = 0;
 
+	// Prompts the user to enter the tile to move the selected piece to.
 	selectTile(piece_movement, arrayIndexMove, &piece_input_flag);
 
+	// Depending on the type of piece selected, check if the intended move is 
+	// valid and if so, update the gameBoard.
  	if(gameBoard[*arrayIndexPiece][1] == 'P'){
  		movePawn(gameBoard, arrayIndexPiece, arrayIndexMove);
  	}
@@ -187,7 +192,11 @@ void movePiece(int* turn, int* arrayIndexPiece, int* arrayIndexMove,
  		moveQueen(gameBoard, arrayIndexPiece, arrayIndexMove);
  	}
 
+ 	else if(gameBoard[*arrayIndexPiece][1] == 'K'){
+ 		moveKing(gameBoard, arrayIndexPiece, arrayIndexMove);
+ 	}
  }
+
 
 int main(int argc, char** argv){
 	int turn = 1;
@@ -207,6 +216,8 @@ int main(int argc, char** argv){
 }
 
 /*
-Simplify movement
-Comment main and move piece, move piece functionality
+Add ability to deselect piece
+Add checkmate functionality 
+Proper logic for normal turn flow
+reset game
 */
