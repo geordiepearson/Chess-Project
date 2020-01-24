@@ -33,7 +33,7 @@ char gameBoard[64][3] = {
 
 void printBoard(int* turn){
 	if(*turn %  2 == 0){ // If it is blacks turn
-		printf("Black's Turn.\n");
+		printf("\nBlack's Turn.\n");
 	}
 
 	else{ // If it is whites turn 
@@ -51,8 +51,7 @@ void printBoard(int* turn){
 	printf("\n");
 }
 
-void getInputTile(char piece_location[], int* piece_input_flag, 
-	int* piece_cancel_flag){
+void getInputTile(char piece_location[], int* piece_input_flag){
 
 	// Intialise 2 integers which will be used to iterate through the users 
 	// input and iterate through the arrays of valid rows and columns on the 
@@ -118,15 +117,14 @@ void getArrayTile(char piece_location[], int* arrayIndex){
 	}
 }
 
-void selectTile(char piece_location[], int* arrayIndex, int* piece_input_flag, 
-	int* piece_cancel_flag){
+void selectTile(char piece_location[], int* arrayIndex, int* piece_input_flag){
 
 	// While the inputted tile is not valid
 	while(*piece_input_flag == 0){
 		*piece_input_flag = 0;
 		printf("Please select a valid tile: ");
 		// Gets user input and checks if tile is valid.
-		getInputTile(piece_location, piece_input_flag, piece_cancel_flag);
+		getInputTile(piece_location, piece_input_flag);
 	}
 	
 	// Computes corresponding array index.
@@ -148,8 +146,7 @@ void isTeamPiece(int* arrayIndex, int* piece_team_flag, int* turn){
 	}	
 }
 
-void selectPiece(int* turn, int* arrayIndexPiece, char piece_location[], 
-	int* piece_cancel_flag){
+void selectPiece(int* turn, int* arrayIndexPiece, char piece_location[]){
 
 	// Intialises the flags to check for valid user input and valid piece 
 	// selection. Set them to false. 
@@ -160,8 +157,7 @@ void selectPiece(int* turn, int* arrayIndexPiece, char piece_location[],
 	// for input and check if the given tile contains a valid piece.
 	while(piece_team_flag == 0){
 		piece_input_flag = 0;
-		selectTile(piece_location, arrayIndexPiece, &piece_input_flag, 
-			piece_cancel_flag);
+		selectTile(piece_location, arrayIndexPiece, &piece_input_flag);
 		isTeamPiece(arrayIndexPiece, &piece_team_flag, turn);
 	}
 
@@ -171,7 +167,7 @@ void selectPiece(int* turn, int* arrayIndexPiece, char piece_location[],
 }
 
 void movePiece(int* turn, int* arrayIndexPiece, int* arrayIndexMove, 
-	char piece_movement[], int* piece_cancel_flag){
+	char piece_movement[]){
 
 	// Intialises the flags to check for valid tile selection. 
 	int tile_input_flag;
@@ -184,42 +180,42 @@ void movePiece(int* turn, int* arrayIndexPiece, int* arrayIndexMove,
 		tile_input_flag = 0;
 
 		// Prompts the user to enter the tile to move the selected piece to.
-		selectTile(piece_movement, arrayIndexMove, &tile_input_flag, piece_cancel_flag);
+		selectTile(piece_movement, arrayIndexMove, &tile_input_flag);
 
-		if(*piece_cancel_flag){
-			return;
-		}
+		// Checks if the user has attempted to deselect the piece. 
+		deselectPiece(gameBoard, arrayIndexPiece, arrayIndexMove, 
+ 			&valid_move_flag);
 
 		// Depending on the type of piece selected, check if the intended move is 
 		// valid and if so, update the gameBoard.
  		if(gameBoard[*arrayIndexPiece][1] == 'P'){
  			movePawn(gameBoard, arrayIndexPiece, arrayIndexMove, 
- 				&valid_move_flag);
+ 				&valid_move_flag, turn);
  		}
 
  		else if(gameBoard[*arrayIndexPiece][1] == 'R'){
  			moveRook(gameBoard, arrayIndexPiece, arrayIndexMove, 
- 				&valid_move_flag);
+ 				&valid_move_flag, turn);
  		}
 
  		else if(gameBoard[*arrayIndexPiece][1] == 'N'){
  			moveKnight(gameBoard, arrayIndexPiece, arrayIndexMove, 
- 				&valid_move_flag);
+ 				&valid_move_flag, turn);
  		}
 
  		else if(gameBoard[*arrayIndexPiece][1] == 'B'){
  			moveBishop(gameBoard, arrayIndexPiece, arrayIndexMove, 
- 				&valid_move_flag);
+ 				&valid_move_flag, turn);
  		}
 
  		else if(gameBoard[*arrayIndexPiece][1] == 'Q'){
  			moveQueen(gameBoard, arrayIndexPiece, arrayIndexMove, 
- 				&valid_move_flag);
+ 				&valid_move_flag, turn);
  		}
 
  		else if(gameBoard[*arrayIndexPiece][1] == 'K'){
  			moveKing(gameBoard, arrayIndexPiece, arrayIndexMove, 
- 				&valid_move_flag);
+ 				&valid_move_flag, turn);
  		}
  	}
  }
@@ -229,18 +225,16 @@ int main(int argc, char** argv){
 	int turn = 1;
 	int arrayIndexPiece = 0;
 	int arrayIndexMove = 0;
-	int piece_cancel_flag = 0;
+	
 
 	char piece_location[4];
 	char piece_movement[4];
 	printBoard(&turn);
 
 	while(1){
-		piece_cancel_flag = 0;
-		selectPiece(&turn, &arrayIndexPiece, piece_location, &piece_cancel_flag);
+		selectPiece(&turn, &arrayIndexPiece, piece_location);
 		printBoard(&turn);
-		movePiece(&turn, &arrayIndexPiece, &arrayIndexMove, piece_movement, 
-			&piece_cancel_flag);
+		movePiece(&turn, &arrayIndexPiece, &arrayIndexMove, piece_movement);
 		printBoard(&turn);
 	}
 }
