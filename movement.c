@@ -5,7 +5,7 @@
 
 void checkFowardTwoPawn(char gameBoard[64][3], int* arrayIndexPiece, 
 	int* arrayIndexMove, int twoTilesInfront, int oneTileInfront, 
-	int rowStart, int rowEnd){
+	int rowStart, int rowEnd, int* valid_move_flag){
 	
 	// Checks that all the following criteria are met:
 	//   - The new tile is 2 spaces directly in front of the pawn
@@ -22,11 +22,12 @@ void checkFowardTwoPawn(char gameBoard[64][3], int* arrayIndexPiece,
 		// Updates the gameBoard to show movement foward of 2 tiles.
 		strcpy(gameBoard[*arrayIndexMove], gameBoard[*arrayIndexPiece]);
 		strcpy(gameBoard[*arrayIndexPiece], "O ");
+		*valid_move_flag = 1;
 	}
 }
 
 void checkFowardOnePawn(char gameBoard[64][3], int* arrayIndexPiece, 
-	int* arrayIndexMove, int oneTileInfront){
+	int* arrayIndexMove, int oneTileInfront, int* valid_move_flag){
 	
 	// Checks that all the following criteria are met:
 	//   - The new tile is 1 space directly in front of the pawn
@@ -39,12 +40,13 @@ void checkFowardOnePawn(char gameBoard[64][3], int* arrayIndexPiece,
 		// Updates the gameBoard to show movement foward of 1 tile.
 		strcpy(gameBoard[*arrayIndexMove], gameBoard[*arrayIndexPiece]);
 		strcpy(gameBoard[*arrayIndexPiece], "O ");
+		*valid_move_flag = 1;
 	}
 }
 
 void checkDiagonalsPawn(char gameBoard[64][3], int* arrayIndexPiece, 
 	int* arrayIndexMove, int rowLocation, int oneTileInDiagonal, 
-	char opposingTeam){
+	char opposingTeam, int* valid_move_flag){
 
 	// Checks that all the following criteria are met:
 	//   - The piece is located in a specfied row (necessary to handle cases 
@@ -60,10 +62,12 @@ void checkDiagonalsPawn(char gameBoard[64][3], int* arrayIndexPiece,
 		// Updates the gameBoard to show movement diagonally foward of 1 tile.
 		strcpy(gameBoard[*arrayIndexMove], gameBoard[*arrayIndexPiece]);
 		strcpy(gameBoard[*arrayIndexPiece], "O ");
+		*valid_move_flag = 1;
 	}
 }
 
-void movePawn(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
+void movePawn(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove, 
+	int* valid_move_flag){
 	// If the selected pawn is white's.
 	if(gameBoard[*arrayIndexPiece][0] == 'W'){
 		// Check if the pawn has been moved forward two spaces with the inputs:
@@ -72,18 +76,19 @@ void movePawn(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
 		//   - 47 and 56, represents row 2 on the board, starting position for 
 		//	   white pawns
 		checkFowardTwoPawn(gameBoard, arrayIndexPiece, arrayIndexMove, 
-			16, 8, 47, 56);
+			16, 8, 47, 56, valid_move_flag);
 
 		// Checks if the pawn has moved foward one space with 8 representing one 
 		// tile directly foward in the array
-		checkFowardOnePawn(gameBoard, arrayIndexPiece, arrayIndexMove, 8);
+		checkFowardOnePawn(gameBoard, arrayIndexPiece, arrayIndexMove, 8,
+			valid_move_flag);
 		
 		// Checks if the selected piece has moved diagonally right with the inputs:
 		//   - 0, represent that the selected piece is in the left most column
 		//   - 7, represents on tile diagonally right in the array
 		//   - B, represents that the opposition team is black  
 		checkDiagonalsPawn(gameBoard, arrayIndexPiece, arrayIndexMove, 0, 7,
-			'B');
+			'B', valid_move_flag);
 		
 		// Checks if the selected piece has moved diagonally right with the inputs:
 		//   - 2-8, represents the selected piece is not on the edge of the board, 
@@ -91,7 +96,7 @@ void movePawn(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
 		//   - Other inputs are same as above
 		for (int rowLocation = 2; rowLocation < 8; ++rowLocation){
 			checkDiagonalsPawn(gameBoard, arrayIndexPiece, arrayIndexMove, 
-				rowLocation, 7, 'B');
+				rowLocation, 7, 'B', valid_move_flag);
 		}
 
 		// Checks if the selected piece has moved diagonally left with the inputs:
@@ -101,7 +106,7 @@ void movePawn(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
 		//   - B, represents that the opposition team is black  
 		for (int rowLocation = 1; rowLocation < 8; ++rowLocation){
 			checkDiagonalsPawn(gameBoard, arrayIndexPiece, arrayIndexMove, 
-				rowLocation, 9, 'B');
+				rowLocation, 9, 'B', valid_move_flag);
 		}		
 	}
 	
@@ -113,18 +118,19 @@ void movePawn(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
 		//   - 7 and 16, represents row 2 on the board, starting position for 
 		//	   white pawns
 		checkFowardTwoPawn(gameBoard, arrayIndexPiece, arrayIndexMove,
-			-16, -8, 7, 16);
+			-16, -8, 7, 16, valid_move_flag);
 		
 		// Checks if the pawn has moved foward one space with -8 representing one 
 		// tile directly foward in the array
-		checkFowardOnePawn(gameBoard, arrayIndexPiece, arrayIndexMove, -8);
+		checkFowardOnePawn(gameBoard, arrayIndexPiece, arrayIndexMove, -8,
+			valid_move_flag);
 
 		// Checks if the selected piece has moved diagonally right with the inputs:
 		//   - 0, represent that the selected piece is in the left most column
 		//   - -9, represents on tile diagonally right in the array
 		//   - W, represents that the opposition team is white  
 		checkDiagonalsPawn(gameBoard, arrayIndexPiece, arrayIndexMove, 0, -9, 
-			'W');
+			'W', valid_move_flag);
 		
 		// Checks if the selected piece has moved diagonally right with the inputs:
 		//   - 2-8, represents the selected piece is not on the edge of the board, 
@@ -132,7 +138,7 @@ void movePawn(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
 		//   - Other inputs are same as above
 		for (int rowLocation = 2; rowLocation < 8; ++rowLocation){
 			checkDiagonalsPawn(gameBoard, arrayIndexPiece, arrayIndexMove, 
-				rowLocation, -9, 'W');
+				rowLocation, -9, 'W', valid_move_flag);
 		}
 
 		// Checks if the selected piece has moved diagonally left with the inputs:
@@ -142,13 +148,13 @@ void movePawn(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
 		//   - W, represents that the opposition team is white
 		for (int rowLocation = 1; rowLocation < 8; ++rowLocation){
 			checkDiagonalsPawn(gameBoard, arrayIndexPiece, arrayIndexMove, 
-				rowLocation, -7, 'W');
+				rowLocation, -7, 'W', valid_move_flag);
 		}		
 	}
 }
 
 void checkVerticalRook(char gameBoard[64][3], int* arrayIndexPiece, 
-	int* arrayIndexMove, int direction){
+	int* arrayIndexMove, int direction, int* valid_move_flag){
 	
 	// Initialises variables to count the number of succesful iterations 
 	// through the loop, the number of spaces between positions and the character
@@ -185,12 +191,13 @@ void checkVerticalRook(char gameBoard[64][3], int* arrayIndexPiece,
 			// Move the rook to the new position and leave the old position empty.
 			strcpy(gameBoard[*arrayIndexMove], gameBoard[*arrayIndexPiece]);
 			strcpy(gameBoard[*arrayIndexPiece], "O ");
+			*valid_move_flag = 1;
 		}
 	}
 }
 
 void checkHorizontalRook(char gameBoard[64][3], int* arrayIndexPiece, 
-	int* arrayIndexMove, int direction){
+	int* arrayIndexMove, int direction, int* valid_move_flag){
 
 	// Initialises variables to count the number of succesful iterations 
 	// through the loop, the number of spaces between positions and the character
@@ -207,7 +214,7 @@ void checkHorizontalRook(char gameBoard[64][3], int* arrayIndexPiece,
 	}
 
 	// If the new position is in the same row as the current position. 
-	if(numberOfSpaces < 8){
+	if((numberOfSpaces < 8) && (*arrayIndexPiece/8 == *arrayIndexMove/8)){
 		// Checks that every space between the two positions (not including them) 
 		// is empty.
 		for(int i = 0; i < numberOfSpaces - 1; ++i){
@@ -231,30 +238,37 @@ void checkHorizontalRook(char gameBoard[64][3], int* arrayIndexPiece,
 				// Move the rook to the new position and leave the old position empty.
 				strcpy(gameBoard[*arrayIndexMove], gameBoard[*arrayIndexPiece]);
 				strcpy(gameBoard[*arrayIndexPiece], "O ");
+				*valid_move_flag = 1;
 			}	
 		}	
 	}
 }
 
-void moveRook(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
+void moveRook(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove, 
+	int* valid_move_flag){
 	// If the player is moving north or west on the board.
 	if(*arrayIndexMove < *arrayIndexPiece){
 		// Checks if a valid vertical move has been attempted.
-		checkVerticalRook(gameBoard, arrayIndexPiece, arrayIndexMove, -8);
+		checkVerticalRook(gameBoard, arrayIndexPiece, arrayIndexMove, -8, 
+			valid_move_flag);
 		// Checks if a valid horizontal move has been attempted.
-		checkHorizontalRook(gameBoard, arrayIndexPiece, arrayIndexMove, -1);
+		checkHorizontalRook(gameBoard, arrayIndexPiece, arrayIndexMove, -1, 
+			valid_move_flag);
 	}
 
 	// If the player is moving south or east on the board. 
 	else{
 		// Checks if a valid vertical move has been attempted.
-		checkVerticalRook(gameBoard, arrayIndexPiece, arrayIndexMove, 8);
+		checkVerticalRook(gameBoard, arrayIndexPiece, arrayIndexMove, 8, 
+			valid_move_flag);
 		// Checks if a valid horizontal move has been attempted.
-		checkHorizontalRook(gameBoard, arrayIndexPiece, arrayIndexMove, 1);
+		checkHorizontalRook(gameBoard, arrayIndexPiece, arrayIndexMove, 1, 
+			valid_move_flag);
 	}
 }
 
-void moveKnight(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
+void moveKnight(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove, 
+	int* valid_move_flag){
 	// Intialises and computes the number of tiles in the array between the 
 	// current and new position. Also intalises a character to represent
 	//  the opposition team.
@@ -281,11 +295,13 @@ void moveKnight(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove
 			// empty.
 			strcpy(gameBoard[*arrayIndexMove], gameBoard[*arrayIndexPiece]);
 			strcpy(gameBoard[*arrayIndexPiece], "O ");
+			*valid_move_flag = 1;
 		}
 	}
 }
 
-void checkBishopMove(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove, int verticalDirection){
+void checkBishopMove(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove,
+ int verticalDirection, int* valid_move_flag){
 	// Intialises: 
 	//  - The number of tiles in the array between the new and current position
 	//  - A character to represent the opposition team
@@ -322,57 +338,71 @@ void checkBishopMove(char gameBoard[64][3], int* arrayIndexPiece, int* arrayInde
 		// Checks that every space between the two positions (not including them) 
 		// is empty.
 		for(int i = 1; i < numberOfSpaces; ++i){
-			if(strcmp(gameBoard[*arrayIndexPiece + (i * Horizontaldirection * verticalDirection)], "O ") == 0){
+			if(strcmp(gameBoard[*arrayIndexPiece + (i * Horizontaldirection * 
+				verticalDirection)], "O ") == 0){
+				
 				count += 1;
 			}
 		}
 
 		// If every space between the two positions is empty and the new position
 		// is empty or contains an opposition piece.
-		if((count + 1 == numberOfSpaces) && ((strcmp(gameBoard[*arrayIndexMove],"O ") == 0) || 
-			(gameBoard[*arrayIndexMove][0] == opposingTeam))){
+		if((count + 1 == numberOfSpaces) && ((strcmp(gameBoard[*arrayIndexMove],"O ") == 0) 
+			|| (gameBoard[*arrayIndexMove][0] == opposingTeam))){
 			
 			// Move the bishop to the new position and leave the old position 
 			// empty.
 			strcpy(gameBoard[*arrayIndexMove], gameBoard[*arrayIndexPiece]);
 			strcpy(gameBoard[*arrayIndexPiece], "O ");
+			*valid_move_flag = 1;
 		}
 	}
 }
 
-void moveBishop(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
+void moveBishop(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove, 
+	int* valid_move_flag){
 	// If the bishop is moving diagonally north on the board.
 	if(*arrayIndexMove < *arrayIndexPiece){
-		checkBishopMove(gameBoard, arrayIndexPiece, arrayIndexMove, -1);
+		checkBishopMove(gameBoard, arrayIndexPiece, arrayIndexMove, -1, 
+			valid_move_flag);
 	}
 
 	// If the bishop is moving diagonally south on the board.
 	else{
-		checkBishopMove(gameBoard, arrayIndexPiece, arrayIndexMove, 1);
+		checkBishopMove(gameBoard, arrayIndexPiece, arrayIndexMove, 1, 
+			valid_move_flag);
 	}
 }
 
-void moveQueen(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
+void moveQueen(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove, 
+	int* valid_move_flag){
 	if(*arrayIndexMove < *arrayIndexPiece){
 		// Checks if a valid vertical move has been attempted.
-		checkVerticalRook(gameBoard, arrayIndexPiece, arrayIndexMove, -8);
+		checkVerticalRook(gameBoard, arrayIndexPiece, arrayIndexMove, -8, 
+			valid_move_flag);
 		// Checks if a valid horizontal move has been attempted.
-		checkHorizontalRook(gameBoard, arrayIndexPiece, arrayIndexMove, -1);
+		checkHorizontalRook(gameBoard, arrayIndexPiece, arrayIndexMove, -1, 
+			valid_move_flag);
 		// Checks if a valid diagonal move has been attempted.
-		checkBishopMove(gameBoard, arrayIndexPiece, arrayIndexMove, -1);
+		checkBishopMove(gameBoard, arrayIndexPiece, arrayIndexMove, -1, 
+			valid_move_flag);
 	}
 
 	else{
 		// Checks if a valid vertical move has been attempted.
-		checkVerticalRook(gameBoard, arrayIndexPiece, arrayIndexMove, 8);
+		checkVerticalRook(gameBoard, arrayIndexPiece, arrayIndexMove, 8, 
+			valid_move_flag);
 		// Checks if a valid horizontal move has been attempted.
-		checkHorizontalRook(gameBoard, arrayIndexPiece, arrayIndexMove, 1);
+		checkHorizontalRook(gameBoard, arrayIndexPiece, arrayIndexMove, 1, 
+			valid_move_flag);
 		// Checks if a valid diagonal move has been attempted.
-		checkBishopMove(gameBoard, arrayIndexPiece, arrayIndexMove, 1);	
+		checkBishopMove(gameBoard, arrayIndexPiece, arrayIndexMove, 1, 
+			valid_move_flag);	
 	}
 }
 
-void moveKing(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
+void moveKing(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove, 
+	int* valid_move_flag){
 	// Intialises an integer to represent the number of tiles in the array the 
 	// king travels.
 	int tileDifference = abs(*arrayIndexMove - *arrayIndexPiece);
@@ -383,6 +413,6 @@ void moveKing(char gameBoard[64][3], int* arrayIndexPiece, int* arrayIndexMove){
 		|| (tileDifference == 9)){
 		
 		// Check if the movement was valid in any direction but only 1 tile away.
-		moveQueen(gameBoard, arrayIndexPiece, arrayIndexMove);
+		moveQueen(gameBoard, arrayIndexPiece, arrayIndexMove, valid_move_flag);
 	}
 }
